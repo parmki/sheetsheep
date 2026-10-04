@@ -106,9 +106,11 @@ button:focus-visible {
 
 .site-header .shell {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 10px 16px;
+  padding-block: 10px;
   min-height: 68px;
 }
 
@@ -627,6 +629,15 @@ section + section { border-top: 1px solid var(--border); }
   margin-bottom: 26px;
 }
 
+/* Horizontal scroll for wide document tables */
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 20px;
+}
+.table-scroll > table { margin-bottom: 0; min-width: 100%; }
+
 /* ---------- Responsive ---------- */
 
 @media (max-width: 900px) {
@@ -642,12 +653,57 @@ section + section { border-top: 1px solid var(--border); }
   .shell { padding-inline: 18px; }
   .hero { padding: 48px 0 40px; }
   section { padding: 52px 0; }
-  .site-nav { gap: 16px; font-size: 0.9rem; }
-  .compare { font-size: 0.88rem; }
-  .compare th, .compare td { padding: 12px 10px; }
-  .compare tbody th { white-space: normal; }
   .feature, .plan { padding: 24px; }
   .doc { padding: 36px 0 60px; }
+
+  /* Header: keep wordmark + nav on one row without colliding */
+  .site-header .shell { justify-content: center; gap: 8px 14px; }
+  .site-nav { gap: 16px; font-size: 0.86rem; }
+  .site-nav .nav-jump { display: none; }
+
+  /* Comparison table becomes stacked cards (3 columns can't fit 390px) */
+  .compare { display: block; font-size: 0.92rem; }
+  .compare thead { display: none; }
+  .compare tbody, .compare tr { display: block; }
+  .compare tr {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+  .compare tbody th {
+    display: block;
+    width: auto;
+    white-space: normal;
+    padding: 12px 16px;
+    background: var(--surface-raised);
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+  .compare td {
+    display: block;
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .compare td:last-child { border-bottom: 0; }
+  .compare td:first-of-type::before { content: "Typical app"; }
+  .compare td:last-child::before { content: "SheetSheep"; }
+  .compare td:first-of-type::before,
+  .compare td:last-child::before {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+  }
+  .compare td:last-child::before { color: var(--accent); }
 }
 
 @media (prefers-reduced-motion: reduce) {
